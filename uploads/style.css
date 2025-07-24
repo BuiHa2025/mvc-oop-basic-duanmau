@@ -1,0 +1,175 @@
+/* Reset & Base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    max-height: 60px;
+}
+
+.search-bar {
+    flex-grow: 1;
+    margin: 0 30px;
+}
+
+.header-actions a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.header-actions a:hover {
+    color: #d40000;
+}
+
+.header-actions i {
+    margin-right: 5px;
+}
+
+/* Navigation Menu */
+.main-menu {
+    background-color: #b81c1c;
+    padding: 10px 0;
+}
+
+.main-menu a {
+    margin: 0 20px;
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+.main-menu a:hover {
+    color: #ffcccb;
+}
+
+/* Banner */
+.banner img {
+    border-radius: 8px;
+}
+
+/* Section Titles */
+section h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #b81c1c;
+}
+
+/* Product Items */
+.border.p-3 {
+    border-radius: 8px;
+    background-color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.border.p-3:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.border.p-3 img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Button "Xem thêm" */
+.btn-light {
+    border: 1px solid #ccc;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+/* Tin tức */
+.news-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+/* Ảnh tin chính */
+.news-main img {
+    max-height: 300px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Ảnh tin phụ */
+.img-thumbnail {
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.d-flex.border-bottom:hover {
+    background-color: #f8f9fa;
+    transition: background 0.3s;
+}
+
+.news-main h4 {
+    color: #b81c1c;
+}
+
+
+/* Footer */
+.site-footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    margin-top: 50px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-size: 14px;
+}
+
+.footer-item {
+    cursor: pointer;
+}
+
+.footer-item:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .search-bar {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .main-menu a {
+        display: inline-block;
+        margin: 5px 10px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
