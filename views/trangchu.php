@@ -6,6 +6,10 @@
     <img src="uploads/about.jpg" alt="Banner" class="img-fluid w-100">
 </div>
 
+<div class="text-center my-4">
+    <a href="index.php?act=register" class="btn btn-primary">Đăng ký</a>
+</div>
+
 <!-- Rượu HOT -->
 <section class="container my-5">
     <h2 class="text-center">RƯỢU HOT</h2>

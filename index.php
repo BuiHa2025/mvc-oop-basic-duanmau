@@ -7,9 +7,11 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 
 // Require toàn bộ file Controllers
 require_once './controllers/ProductController.php';
+require_once './controllers/AuthController.php';
 
 // Require toàn bộ file Models
 require_once './models/ProductModel.php';
+require_once './models/UserModel.php';
 
 // Route
 $act = $_GET['act'] ?? '/';
@@ -20,6 +22,9 @@ try {
         // Trang chủ
         '/' => (new ProductController())->Home(),
         'chitiet' => (new ProductController())->showDetail(),
+        'login' => (new AuthController())->login(),
+        'register' => (new AuthController())->register(),
+        'logout' => (new AuthController())->logout(),
         // Thêm route mặc định cho các trường hợp không khớp
         default => (new ProductController())->Home()
     };
