@@ -14,11 +14,19 @@ require_once './models/ProductModel.php';
 // Route
 $act = $_GET['act'] ?? '/';
 
-
-// Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
-
-match ($act) {
-    // Trang chủ
-    '/'=>(new ProductController())->Home(),
-
-};
+try {
+    // Để bảo đảm tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
+    match ($act) {
+        // Trang chủ
+        '/' => (new ProductController())->Home(),
+        'chitiet' => (new ProductController())->showDetail(),
+        // Thêm route mặc định cho các trường hợp không khớp
+        default => (new ProductController())->Home()
+    };
+} catch (Exception $e) {
+    // Xử lý lỗi và hiển thị trang lỗi
+    echo "Lỗi: " . $e->getMessage();
+    // Hoặc chuyển hướng về trang chủ
+    header('Location: index.php');
+    exit();
+}
