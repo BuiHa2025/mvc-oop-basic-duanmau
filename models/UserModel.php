@@ -21,23 +21,25 @@ class UserModel
         }
     }
 
-    public function createUser($username, $password)
+    public function createUser($username, $password, $email)
     {
         try {
-            // Check if username already exists
-            $stmt = $this->conn->prepare("SELECT id FROM users WHERE username = :username");
+            // Check if username or email already exists
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE username = :username OR email = :email");
             $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
-                return false; // Username already exists
+                return false; // Username or email already exists
             }
 
             // Hash the password before storing
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $this->conn->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+            $stmt = $this->conn->prepare("INSERT INTO users (username, password, email, created_at) VALUES (:username, :password, :email, NOW())");
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':password', $hashed_password);
+            $stmt->bindParam(':email', $email);
             $stmt->execute();
             return true;
         } catch (PDOException $e) {
@@ -49,7 +51,7 @@ class UserModel
     public function findUser($username, $password)
     {
         try {
-            $stmt = $this->conn->prepare("SELECT id, password FROM users WHERE username = :username");
+            $stmt = $this->conn->prepare("SELECT id, username, email, password FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -57,10 +59,32 @@ class UserModel
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 // Verify password
                 if (password_verify($password, $user['password'])) {
-                    return true; // User found and password correct
+                    // Return user data without password
+                    return [
+                        'id' => $user['id'],
+                        'username' => $user['username'],
+                        'email' => $user['email']
+                    ];
                 }
             }
             return false; // User not found or password incorrect
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getUserById($id)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT id, username, email FROM users WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() > 0) {
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            }
+            return false;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;

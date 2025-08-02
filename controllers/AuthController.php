@@ -9,60 +9,83 @@ class AuthController
     public function __construct()
     {
         $this->userModel = new UserModel();
-    }
-
-    public function register()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'] ?? '';
-            $password = $_POST['password'] ?? '';
-
-            if (empty($username) || empty($password)) {
-                echo "Tên người dùng và mật khẩu là bắt buộc.";
-                return;
-            }
-
-            if ($this->userModel->createUser($username, $password)) {
-                echo "Đăng ký thành công! Bây giờ bạn có thể đăng nhập.";
-                // Tùy chọn chuyển hướng đến trang đăng nhập
-                // header('Location: /login');
-                // exit();
-            } else {
-                echo "Đăng ký thất bại. Tên người dùng có thể đã tồn tại.";
-            }
-        } else {
-            include 'views/register.php';
+        // Khởi tạo session nếu chưa có
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
         }
     }
 
-    public function login()
-    {
+    public function register() {
+        $error = '';
+        $success = '';
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'] ?? '';
+            $username = trim($_POST['username'] ?? '');
+            $password = $_POST['password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $email = trim($_POST['email'] ?? '');
+
+            // Validate input
+            if (empty($username) || empty($password) || empty($email)) {
+                $error = "Vui lòng điền đầy đủ thông tin!";
+            } elseif (strlen($password) < 6) {
+                $error = "Mật khẩu phải có ít nhất 6 ký tự!";
+            } elseif ($password !== $confirmPassword) {
+                $error = "Mật khẩu xác nhận không khớp!";
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = "Email không hợp lệ!";
+            } else {
+                $result = $this->userModel->createUser($username, $password, $email);
+                if ($result) {
+                    $success = "Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.";
+                } else {
+                    $error = "Tên đăng nhập hoặc email đã tồn tại!";
+                }
+            }
+        }
+
+        // Load giao diện đăng ký
+        include_once PATH_VIEW . 'users/register.php';
+    }
+
+    public function login() {
+        $error = '';
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = trim($_POST['username'] ?? '');
             $password = $_POST['password'] ?? '';
 
             if (empty($username) || empty($password)) {
-                echo "Tên người dùng và mật khẩu là bắt buộc.";
-                return;
-            }
-
-            if ($this->userModel->findUser($username, $password)) {
-                echo "Đăng nhập thành công!";
-                // Tùy chọn chuyển hướng đến trang tổng quan hoặc trang chủ
-                // header('Location: /');
-                // exit();
+                $error = "Vui lòng nhập đầy đủ thông tin!";
             } else {
-                echo "Đăng nhập thất bại. Tên người dùng hoặc mật khẩu không hợp lệ.";
+                $user = $this->userModel->findUser($username, $password);
+                if ($user) {
+                    $_SESSION['user'] = [
+                        'id' => $user['id'],
+                        'username' => $user['username'],
+                        'email' => $user['email']
+                    ];
+                    header("Location: index.php");
+                    exit;
+                } else {
+                    $error = "Tên đăng nhập hoặc mật khẩu không đúng!";
+                }
             }
         }
-        else {
-            include 'views/login.php';
-        }
+        
+        // Load giao diện đăng nhập
+        include_once PATH_VIEW . 'users/login.php';
     }
 
     public function logout()
     {
-        echo "Đăng xuất thành công!";
-        // Logic để hủy phiên
+        // Hủy session
+        session_start();
+        session_unset();
+        session_destroy();
+        
+        // Chuyển hướng về trang chủ
+        header("Location: index.php");
+        exit;
     }
 }

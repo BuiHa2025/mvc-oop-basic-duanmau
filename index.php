@@ -1,4 +1,7 @@
 <?php 
+// Khởi tạo session
+session_start();
+
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common

@@ -53,4 +53,5 @@ class ProductController
         
         require_once PATH_VIEW . 'products/list.php';
     }
+    
 }
