@@ -43,6 +43,9 @@
                     <a href="#" class="dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user me-1"></i>
                         Xin chào, <?= htmlspecialchars($_SESSION['user']['username']) ?>
+                        <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+                            <span class="badge bg-danger ms-1">Admin</span>
+                        <?php endif; ?>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="index.php?act=profile">
@@ -51,6 +54,15 @@
                         <li><a class="dropdown-item" href="index.php?act=orders">
                             <i class="fas fa-shopping-bag me-2"></i>Đơn hàng của tôi
                         </a></li>
+                        <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.php?act=categories">
+                                <i class="fas fa-tags me-2"></i>Quản lý danh mục
+                            </a></li>
+                            <li><a class="dropdown-item" href="index.php?act=products">
+                                <i class="fas fa-box me-2"></i>Quản lý sản phẩm
+                            </a></li>
+                        <?php endif; ?>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="index.php?act=logout">
                             <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
@@ -81,15 +93,17 @@
         <a href="index.php" class="<?= (!isset($_GET['act']) || $_GET['act'] == '/') ? 'active' : '' ?>">
             <i class="fas fa-home me-1"></i>Trang chủ
         </a>
-        <a href="index.php?act=categories" class="<?= (isset($_GET['act']) && strpos($_GET['act'], 'categor') !== false) ? 'active' : '' ?>">
-            <i class="fas fa-tags me-1"></i>Danh mục
-        </a>
-        <a href="index.php?act=products" class="<?= (isset($_GET['act']) && $_GET['act'] == 'products') ? 'active' : '' ?>">
-            <i class="fas fa-wine-bottle me-1"></i>Rượu Vang
-        </a>
-        <a href="index.php?act=products&type=ruou-manh">
-            <i class="fas fa-glass-whiskey me-1"></i>Rượu Mạnh
-        </a>
+        
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
+            <!-- Admin-only navigation links -->
+            <a href="index.php?act=categories" class="<?= (isset($_GET['act']) && strpos($_GET['act'], 'categor') !== false) ? 'active' : '' ?>">
+                <i class="fas fa-tags me-1"></i>Quản lý danh mục
+            </a>
+            <a href="index.php?act=products" class="<?= (isset($_GET['act']) && (strpos($_GET['act'], 'product') !== false || $_GET['act'] == 'products')) ? 'active' : '' ?>">
+                <i class="fas fa-box me-1"></i>Quản lý sản phẩm
+            </a>
+        <?php endif; ?>
+        
         <a href="index.php?act=news">
             <i class="fas fa-newspaper me-1"></i>Tin tức
         </a>

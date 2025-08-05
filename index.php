@@ -24,19 +24,27 @@ $act = $_GET['act'] ?? '/';
 try {
     // Để bảo đảm tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
     match ($act) {
-        // Trang chủ
+        // Trang chủ - Tất cả user đều có thể truy cập
         '/' => (new ProductController())->Home(),
         'chitiet' => (new ProductController())->showDetail(),
+        
+        // Authentication routes - Tất cả user đều có thể truy cập
         'login' => (new AuthController())->login(),
         'register' => (new AuthController())->register(),
         'logout' => (new AuthController())->logout(),
         
-        // Category routes
+        // Category routes - Chỉ admin mới có thể truy cập (kiểm tra trong controller)
         'categories' => (new CategoryController())->index(),
         'category-create' => (new CategoryController())->create(),
         'category-edit' => (new CategoryController())->edit(),
         'category-delete' => (new CategoryController())->delete(),
         'category-show' => (new CategoryController())->show(),
+        
+        // Product CRUD routes - Chỉ admin mới có thể truy cập (kiểm tra trong controller)
+        'products' => (new ProductController())->index(),
+        'product-create' => (new ProductController())->create(),
+        'product-edit' => (new ProductController())->edit(),
+        'product-delete' => (new ProductController())->delete(),
         
         // Thêm route mặc định cho các trường hợp không khớp
         default => (new ProductController())->Home()

@@ -41,3 +41,41 @@ function deleteFile($file){
         unlink($pathDelete); // Hàm unlink dùng để xóa file
     }
 }
+
+// Kiểm tra xem user đã đăng nhập chưa
+function isLoggedIn() {
+    return isset($_SESSION['user']) && !empty($_SESSION['user']);
+}
+
+// Kiểm tra xem user có phải admin không
+function isAdmin() {
+    return isLoggedIn() && isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin';
+}
+
+// Kiểm tra quyền truy cập admin, nếu không phải admin thì chuyển về trang chủ
+function requireAdmin() {
+    if (!isAdmin()) {
+        $_SESSION['message'] = "Bạn không có quyền truy cập vào trang này!";
+        $_SESSION['message_type'] = "error";
+        header('Location: index.php');
+        exit();
+    }
+}
+
+// Kiểm tra đăng nhập, nếu chưa đăng nhập thì chuyển về trang đăng nhập
+function requireLogin() {
+    if (!isLoggedIn()) {
+        header('Location: index.php?act=login');
+        exit();
+    }
+}
+
+// Lấy thông tin user hiện tại
+function getCurrentUser() {
+    return $_SESSION['user'] ?? null;
+}
+
+// Lấy role của user hiện tại
+function getCurrentUserRole() {
+    return $_SESSION['user']['role'] ?? 'guest';
+}

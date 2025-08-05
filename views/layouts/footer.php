@@ -21,7 +21,7 @@
                 <h6>Thông tin liên hệ</h6>
                 <p class="text-muted mb-1"><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, Quận XYZ, HN</p>
                 <p class="text-muted mb-1"><i class="fas fa-phone me-2"></i>(028) 1234 5678</p>
-                <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i>info@cuahangруou.com</p>
+                <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i>ruouchat@gmai.com</p>
             </div>
         </div>
         <hr class="my-3">

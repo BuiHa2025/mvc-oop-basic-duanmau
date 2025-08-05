@@ -12,6 +12,9 @@ class CategoryController
     // Hiển thị danh sách danh mục
     public function index()
     {
+        // Kiểm tra quyền admin
+        requireAdmin();
+        
         $title = "Quản lý danh mục";
         $categories = $this->modelCategory->getAllCategories();
         $totalCategories = $this->modelCategory->countCategories();
@@ -27,6 +30,9 @@ class CategoryController
     // Hiển thị form tạo danh mục mới
     public function create()
     {
+        // Kiểm tra quyền admin
+        requireAdmin();
+        
         $title = "Thêm danh mục mới";
         $error = '';
         
@@ -61,6 +67,9 @@ class CategoryController
     // Hiển thị form chỉnh sửa danh mục
     public function edit()
     {
+        // Kiểm tra quyền admin
+        requireAdmin();
+        
         $id = $_GET['id'] ?? 0;
         
         // Validate ID
@@ -113,6 +122,9 @@ class CategoryController
     // Xóa danh mục
     public function delete()
     {
+        // Kiểm tra quyền admin
+        requireAdmin();
+        
         $id = $_GET['id'] ?? 0;
         
         // Validate ID
@@ -149,6 +161,9 @@ class CategoryController
     // Hiển thị chi tiết danh mục (tùy chọn)
     public function show()
     {
+        // Kiểm tra quyền admin
+        requireAdmin();
+        
         $id = $_GET['id'] ?? 0;
         
         // Validate ID

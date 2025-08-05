@@ -21,7 +21,7 @@ class UserModel
         }
     }
 
-    public function createUser($username, $password, $email)
+    public function createUser($username, $password, $email, $role = 'user')
     {
         try {
             // Check if username or email already exists
@@ -36,10 +36,11 @@ class UserModel
             // Hash the password before storing
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $this->conn->prepare("INSERT INTO users (username, password, email, created_at) VALUES (:username, :password, :email, NOW())");
+            $stmt = $this->conn->prepare("INSERT INTO users (username, password, email, role, created_at) VALUES (:username, :password, :email, :role, NOW())");
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':password', $hashed_password);
             $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':role', $role);
             $stmt->execute();
             return true;
         } catch (PDOException $e) {
@@ -51,7 +52,7 @@ class UserModel
     public function findUser($username, $password)
     {
         try {
-            $stmt = $this->conn->prepare("SELECT id, username, email, password FROM users WHERE username = :username");
+            $stmt = $this->conn->prepare("SELECT id, username, email, password, role FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -63,7 +64,8 @@ class UserModel
                     return [
                         'id' => $user['id'],
                         'username' => $user['username'],
-                        'email' => $user['email']
+                        'email' => $user['email'],
+                        'role' => $user['role'] ?? 'user'
                     ];
                 }
             }
@@ -77,7 +79,7 @@ class UserModel
     public function getUserById($id)
     {
         try {
-            $stmt = $this->conn->prepare("SELECT id, username, email FROM users WHERE id = :id");
+            $stmt = $this->conn->prepare("SELECT id, username, email, role FROM users WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             
@@ -89,5 +91,11 @@ class UserModel
             echo "Error: " . $e->getMessage();
             return false;
         }
+    }
+
+    // Method to create admin user
+    public function createAdminUser($username, $password, $email)
+    {
+        return $this->createUser($username, $password, $email, 'admin');
     }
 }
