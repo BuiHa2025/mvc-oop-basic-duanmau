@@ -81,6 +81,9 @@
         <a href="index.php" class="<?= (!isset($_GET['act']) || $_GET['act'] == '/') ? 'active' : '' ?>">
             <i class="fas fa-home me-1"></i>Trang chủ
         </a>
+        <a href="index.php?act=categories" class="<?= (isset($_GET['act']) && strpos($_GET['act'], 'categor') !== false) ? 'active' : '' ?>">
+            <i class="fas fa-tags me-1"></i>Danh mục
+        </a>
         <a href="index.php?act=products" class="<?= (isset($_GET['act']) && $_GET['act'] == 'products') ? 'active' : '' ?>">
             <i class="fas fa-wine-bottle me-1"></i>Rượu Vang
         </a>
