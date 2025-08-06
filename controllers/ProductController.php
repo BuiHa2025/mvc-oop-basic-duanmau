@@ -4,11 +4,15 @@ class ProductController
 {
     public $modelProduct;
     public $modelCategory;
+    public $modelBanner;
+    public $modelArticle;
 
     public function __construct()
     {
         $this->modelProduct = new ProductModel();
         $this->modelCategory = new CategoryModel();
+        $this->modelBanner = new BannerModel();
+        $this->modelArticle = new ArticleModel();
     }
 
     public function Home()
@@ -20,10 +24,68 @@ class ProductController
         $newProducts = $this->modelProduct->getNewProducts(6);
         $featuredProducts = $this->modelProduct->getFeaturedProducts(8);
         
+        // Lấy banner theo vị trí
+        $mainBanners = $this->modelBanner->getBannersByPosition('main');
+        $sideBanners = $this->modelBanner->getBannersByPosition('sidebar');
+        $footerBanners = $this->modelBanner->getBannersByPosition('footer');
+        
+        // Lấy danh mục để hiển thị
+        $categories = $this->modelCategory->getAllCategories();
+        
+        // Lấy bài viết mới nhất
+        $latestArticles = $this->modelArticle->getLatestArticles(3);
+        
         require_once './views/trangchu.php';
     }
 
-    public function showDetail() 
+    // Tìm kiếm sản phẩm
+    public function search()
+    {
+        $title = "Kết quả tìm kiếm";
+        $keyword = $_GET['keyword'] ?? '';
+        $category_id = $_GET['category_id'] ?? '';
+        
+        // Lấy danh sách danh mục để hiển thị filter
+        $categories = $this->modelCategory->getAllCategories();
+        
+        $products = [];
+        if (!empty($keyword) || !empty($category_id)) {
+            $products = $this->modelProduct->searchProducts($keyword, $category_id, 'active');
+        }
+        
+        require_once './views/products/search.php';
+    }
+
+    // Hiển thị sản phẩm theo danh mục
+    public function productsByCategory()
+    {
+        $category_id = $_GET['category_id'] ?? 0;
+        
+        // Validate category ID
+        if (!is_numeric($category_id) || $category_id <= 0) {
+            header('Location: index.php');
+            exit();
+        }
+        
+        // Lấy thông tin danh mục
+        $category = $this->modelCategory->getCategoryById($category_id);
+        if (!$category) {
+            header('Location: index.php');
+            exit();
+        }
+        
+        $title = "Sản phẩm - " . $category['name'];
+        
+        // Lấy sản phẩm theo danh mục
+        $products = $this->modelProduct->searchProducts('', $category_id, 'active');
+        
+        // Lấy tất cả danh mục để hiển thị sidebar
+        $categories = $this->modelCategory->getAllCategories();
+        
+        require_once './views/products/category.php';
+    }
+
+    public function showDetail()
     {
         // Lấy ID từ URL
         $id = $_GET['id'] ?? 1;

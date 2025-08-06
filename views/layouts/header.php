@@ -94,6 +94,27 @@
             <i class="fas fa-home me-1"></i>Trang chủ
         </a>
         
+        <!-- Danh mục sản phẩm -->
+        <div class="dropdown d-inline-block">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-wine-bottle me-1"></i>Danh mục sản phẩm
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="index.php?act=category&category_id=1">
+                    <i class="fas fa-wine-glass me-2"></i>Rượu Vang
+                </a></li>
+                <li><a class="dropdown-item" href="index.php?act=category&category_id=2">
+                    <i class="fas fa-glass-whiskey me-2"></i>Rượu Mạnh
+                </a></li>
+                <li><a class="dropdown-item" href="index.php?act=category&category_id=3">
+                    <i class="fas fa-champagne-glasses me-2"></i>Rượu Sâm Panh
+                </a></li>
+                <li><a class="dropdown-item" href="index.php?act=category&category_id=4">
+                    <i class="fas fa-seedling me-2"></i>Rượu Truyền Thống
+                </a></li>
+            </ul>
+        </div>
+        
         <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
             <!-- Admin-only navigation links -->
             <a href="index.php?act=categories" class="<?= (isset($_GET['act']) && strpos($_GET['act'], 'categor') !== false) ? 'active' : '' ?>">

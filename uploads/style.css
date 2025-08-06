@@ -124,10 +124,48 @@ body {
     font-weight: 500;
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
+    padding: 8px 12px;
+    border-radius: 4px;
 }
 
 .main-menu a:hover {
     color: #ffcccb;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-menu .dropdown-toggle {
+    border: none;
+    background: none;
+    color: #fff;
+    font-weight: 500;
+    margin: 0 20px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.main-menu .dropdown-toggle:hover {
+    color: #ffcccb;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-menu .dropdown-menu {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-top: 5px;
+}
+
+.main-menu .dropdown-item {
+    color: #333;
+    padding: 10px 20px;
+    transition: background 0.3s;
+}
+
+.main-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #b81c1c;
 }
 
 /* Banner */
@@ -197,27 +235,92 @@ section h2 {
 }
 
 
-/* Footer */
-.site-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-    margin-top: 50px;
+/* Footer Enhancements */
+footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    border-top: 3px solid #f39c12;
 }
 
-.footer-content {
+.footer-section h5,
+.footer-section h6 {
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-section h5::after,
+.footer-section h6::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background-color: #f39c12;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+    transition: transform 0.2s ease;
+}
+
+.footer-links li:hover {
+    transform: translateX(5px);
+}
+
+.footer-links a:hover {
+    color: #f39c12 !important;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #f39c12;
+    transform: translateY(-3px);
+}
+
+.contact-item {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    font-size: 14px;
+    align-items: center;
+    padding: 5px 0;
 }
 
-.footer-item {
-    cursor: pointer;
+.contact-item i {
+    width: 20px;
+    flex-shrink: 0;
 }
 
-.footer-item:hover {
-    text-decoration: underline;
+.newsletter .input-group {
+    margin-top: 10px;
+}
+
+.newsletter .btn-warning {
+    border-color: #f39c12;
+}
+
+.footer-policies a:hover {
+    color: #f39c12 !important;
+}
+
+/* Back to top button */
+#btn-back-to-top {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    border: none;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    transition: all 0.3s ease;
+}
+
+#btn-back-to-top:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
 }
 
 /* Responsive */
@@ -241,5 +344,456 @@ section h2 {
     .footer-content {
         flex-direction: column;
         align-items: center;
+    }
+}
+
+/* Category Cards */
+.category-card {
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #e0e0e0;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border-color: #dc3545;
+}
+
+.category-card .card-body {
+    padding: 20px;
+}
+
+.category-card i {
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover i {
+    transform: scale(1.1);
+}
+
+/* Product Cards */
+.product-card {
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #e0e0e0;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #dc3545;
+}
+
+/* Hot Products Styling */
+.hot-product {
+    border: 2px solid transparent;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.hot-product::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+    z-index: 1;
+}
+
+.hot-product:hover::before {
+    left: 100%;
+}
+
+.hot-product:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(220, 53, 69, 0.3);
+    border-color: #dc3545;
+}
+
+.hot-product .badge {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    border-radius: 15px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.hot-product .card-title a:hover {
+    color: #dc3545 !important;
+}
+
+.hot-product .btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    transform: scale(1.05);
+}
+
+/* Section Headers Enhancement */
+section h2 {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+}
+
+section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #dc3545, #ffc107);
+    border-radius: 2px;
+}
+
+/* Product Card Improvements */
+.product-card .card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.product-card .card-body {
+    padding: 1.25rem;
+}
+
+.product-card .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+}
+
+.product-card .card-text {
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments for hot products */
+@media (max-width: 768px) {
+    .hot-product {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Wine Bottle Image Styling */
+    .wine-bottle-img {
+        transition: all 0.4s ease;
+        border-radius: 8px 8px 0 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .wine-bottle-img::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(255,255,255,0.1) 0%,
+            rgba(255,255,255,0.05) 25%,
+            transparent 50%,
+            rgba(0,0,0,0.05) 75%,
+            rgba(0,0,0,0.1) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+    }
+    
+    .product-card:hover .wine-bottle-img::before {
+        opacity: 1;
+    }
+    
+    .product-card:hover .wine-bottle-img {
+        transform: scale(1.08);
+        filter: brightness(1.1) contrast(1.05);
+    }
+    
+    /* New Product Styling */
+    .new-product {
+        border: 2px solid transparent;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .new-product:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 123, 255, 0.2);
+        border-color: #007bff;
+    }
+    
+    .new-product .badge {
+        animation: sparkle 3s infinite;
+    }
+    
+    @keyframes sparkle {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        25% { transform: scale(1.1) rotate(-5deg); }
+        50% { transform: scale(1.05) rotate(5deg); }
+        75% { transform: scale(1.1) rotate(-3deg); }
+    }
+    
+    /* Featured Product Styling */
+    .featured-product {
+        border: 2px solid transparent;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+    }
+    
+    .featured-product::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #ffc107, #fd7e14, #ffc107, #fd7e14);
+        border-radius: 8px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .featured-product:hover::after {
+        opacity: 1;
+    }
+    
+    .featured-product:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(255, 193, 7, 0.3);
+    }
+    
+    .featured-product .badge {
+        background: linear-gradient(45deg, #ffc107, #fd7e14);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+        from { box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
+        to { box-shadow: 0 0 15px rgba(255, 193, 7, 0.8); }
+    }
+    
+    /* Wine Bottle Reflection Effect */
+    .wine-bottle-img::after {
+        content: '';
+        position: absolute;
+        top: 10%;
+        left: 15%;
+        width: 20%;
+        height: 60%;
+        background: linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.3) 0%,
+            rgba(255,255,255,0.1) 30%,
+            transparent 70%
+        );
+        border-radius: 50px;
+        opacity: 0.7;
+        transform: skew(-10deg);
+        z-index: 2;
+    }
+    
+    /* Product Card Enhancements */
+    .product-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: #fff;
+    }
+    
+    .product-card .card-body {
+        background: linear-gradient(to bottom, #fff 0%, #fafafa 100%);
+    }
+    
+    .product-card:hover .card-body {
+        background: linear-gradient(to bottom, #fff 0%, #f8f9fa 100%);
+    }
+    
+    /* Price styling */
+    .product-card .text-danger {
+        text-shadow: 1px 1px 2px rgba(220, 53, 69, 0.1);
+        font-weight: 700;
+    }
+    
+    /* Button enhancements */
+    .product-card .btn {
+        transition: all 0.3s ease;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .product-card .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    /* Responsive wine bottle images */
+    @media (max-width: 768px) {
+        .wine-bottle-img {
+            height: 220px !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .wine-bottle-img {
+            height: 200px !important;
+        }
+        
+        .product-card .card-body {
+            padding: 1rem;
+        }
+    }
+    
+    .hot-product .card-img-top {
+        height: 200px !important;
+    }
+    
+    section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hot-product .card-img-top {
+        height: 180px !important;
+    }
+    
+    .hot-product .card-body {
+        padding: 1rem;
+    }
+    
+    section h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Banner Carousel */
+.banner-section .carousel-item img {
+    border-radius: 10px;
+}
+
+.carousel-caption {
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+/* Search Results */
+.search-results .product-card {
+    margin-bottom: 20px;
+}
+
+/* News Section Enhancements */
+.news-box {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.news-main h4 a:hover {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+.news-main .btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Sidebar */
+.list-group-item.active {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Badges */
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+/* Buttons */
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Mobile Responsive Enhancements */
+@media (max-width: 768px) {
+    .category-card .card-body {
+        padding: 15px;
+    }
+    
+    .product-card .card-body {
+        padding: 15px;
+    }
+    
+    .banner-section .carousel-item img {
+        height: 250px !important;
+    }
+    
+    .news-main img {
+        height: 200px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .top-header {
+        padding: 10px 15px;
+    }
+    
+    .search-bar {
+        margin: 10px 0;
+    }
+    
+    .main-menu {
+        padding: 8px 0;
+    }
+    
+    .main-menu a {
+        margin: 0 10px;
+        font-size: 14px;
+    }
+    
+    .banner-section .carousel-item img {
+        height: 200px !important;
     }
 }

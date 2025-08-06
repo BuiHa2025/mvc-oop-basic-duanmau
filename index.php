@@ -17,6 +17,8 @@ require_once './controllers/CategoryController.php';
 require_once './models/ProductModel.php';
 require_once './models/UserModel.php';
 require_once './models/CategoryModel.php';
+require_once './models/BannerModel.php';
+require_once './models/ArticleModel.php';
 
 // Route
 $act = $_GET['act'] ?? '/';
@@ -26,6 +28,8 @@ try {
     match ($act) {
         // Trang chủ - Tất cả user đều có thể truy cập
         '/' => (new ProductController())->Home(),
+        'search' => (new ProductController())->search(),
+        'category' => (new ProductController())->productsByCategory(),
         'chitiet' => (new ProductController())->showDetail(),
         
         // Authentication routes - Tất cả user đều có thể truy cập
