@@ -327,4 +327,18 @@ class ProductController
         require_once PATH_VIEW . 'products/list.php';
     }
     
+
+    // Hiển thị danh sách tất cả sản phẩm (cho người dùng)
+    public function listing()
+    {
+        $title = "Tất cả sản phẩm";
+        
+        // Lấy tất cả sản phẩm đang hoạt động
+        $products = $this->modelProduct->searchProducts('', '', 'active');
+        
+        // Lấy danh sách danh mục để hiển thị sidebar
+        $categories = $this->modelCategory->getAllCategories();
+        
+        require_once PATH_VIEW . 'products/listing.php';
+    }
 }

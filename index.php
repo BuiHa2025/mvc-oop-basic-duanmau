@@ -31,6 +31,7 @@ try {
         'search' => (new ProductController())->search(),
         'category' => (new ProductController())->productsByCategory(),
         'chitiet' => (new ProductController())->showDetail(),
+        'products-listing' => (new ProductController())->listing(),
         
         // Authentication routes - Tất cả user đều có thể truy cập
         'login' => (new AuthController())->login(),
