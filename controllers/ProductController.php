@@ -35,8 +35,8 @@ class ProductController
         // Lấy bài viết mới nhất
         $latestArticles = $this->modelArticle->getLatestArticles(3);
         
-        require_once './views/trangchu.php';
-    }
+require_once PATH_VIEW . 'trangchu.php';
+}
 
     // Tìm kiếm sản phẩm
     public function search()
@@ -107,6 +107,8 @@ class ProductController
         $title = "Chi tiết sản phẩm - " . ($product['name'] ?? 'Sản phẩm');
         
         require_once PATH_VIEW . 'products/detail.php';
+// Lấy sản phẩm liên quan
+        $relatedProducts = $this->modelProduct->getRelatedProducts($id, $product['category_id']);
     }
 
     // Hiển thị danh sách sản phẩm với tìm kiếm
@@ -340,5 +342,74 @@ class ProductController
         $categories = $this->modelCategory->getAllCategories();
         
         require_once PATH_VIEW . 'products/listing.php';
+    }
+    
+    // Hiển thị giỏ hàng
+    public function cart()
+    {
+        $title = "Giỏ hàng";
+        
+        // Lấy giỏ hàng từ session
+        $cart = $_SESSION['cart'] ?? [];
+        
+        require_once PATH_VIEW . 'products/cart.php';
+    }
+    
+    // Thêm sản phẩm vào giỏ hàng
+    public function addToCart()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $product_id = $_POST['product_id'] ?? 0;
+            $quantity = $_POST['quantity'] ?? 1;
+            
+            // Validate dữ liệu
+            if (!is_numeric($product_id) || $product_id <= 0) {
+                echo json_encode(['success' => false, 'message' => 'ID sản phẩm không hợp lệ!']);
+                exit();
+            }
+            
+            if (!is_numeric($quantity) || $quantity <= 0) {
+                echo json_encode(['success' => false, 'message' => 'Số lượng không hợp lệ!']);
+                exit();
+            }
+            
+            // Lấy thông tin sản phẩm
+            $product = $this->modelProduct->getProductById($product_id);
+            if (!$product) {
+                echo json_encode(['success' => false, 'message' => 'Không tìm thấy sản phẩm!']);
+                exit();
+            }
+            
+            // Khởi tạo giỏ hàng nếu chưa có
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+            
+            // Thêm sản phẩm vào giỏ hàng
+            if (isset($_SESSION['cart'][$product_id])) {
+                $_SESSION['cart'][$product_id]['quantity'] += $quantity;
+            } else {
+                $_SESSION['cart'][$product_id] = [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'price' => $product['price'],
+                    'image' => $product['image'],
+                    'quantity' => $quantity
+                ];
+            }
+            
+            // Tính tổng số lượng sản phẩm trong giỏ hàng
+            $totalItems = 0;
+            foreach ($_SESSION['cart'] as $item) {
+                $totalItems += $item['quantity'];
+            }
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
+                'totalItems' => $totalItems
+            ]);
+            exit();
+        }
     }
 }

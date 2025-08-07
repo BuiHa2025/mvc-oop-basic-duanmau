@@ -82,7 +82,15 @@
             <a href="index.php?act=cart" class="position-relative text-decoration-none">
                 <i class="fas fa-shopping-cart fa-lg me-1"></i>Giỏ hàng
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7em;">
-                    0
+                    <?php
+                    $cartCount = 0;
+                    if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+                        foreach ($_SESSION['cart'] as $item) {
+                            $cartCount += $item['quantity'];
+                        }
+                    }
+                    echo $cartCount;
+                    ?>
                 </span>
             </a>
         </div>

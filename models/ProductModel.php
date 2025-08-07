@@ -251,4 +251,21 @@ class ProductModel
             return false;
         }
     }
+
+    // Lấy sản phẩm liên quan (cùng danh mục)
+    public function getRelatedProducts($productId, $categoryId, $limit = 4)
+    {
+        try {
+            $sql = "SELECT * FROM products WHERE id != :productId AND category_id = :categoryId AND status = 'active' ORDER BY id DESC LIMIT :limit";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+            $stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            echo "Lỗi: " . $e->getMessage();
+            return [];
+        }
+    }
 }

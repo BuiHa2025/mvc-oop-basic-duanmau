@@ -13,9 +13,9 @@
         <div class="col-md-6">
             <div class="product-image">
                 <?php if (isset($product) && !empty($product)): ?>
-                    <img src="uploads/<?= $product['image'] ?? 'ruouA.jpg' ?>" alt="<?= htmlspecialchars($product['name'] ?? 'Sản phẩm') ?>" class="img-fluid rounded shadow">
+                    <img src="uploads/<?= $product['image'] ?? 'ruouA.jpg' ?>?v=<?= time() ?>" alt="<?= htmlspecialchars($product['name'] ?? 'Sản phẩm') ?>" class="img-fluid rounded shadow">
                 <?php else: ?>
-                    <img src="uploads/ruouA.jpg" alt="Rượu ngon" class="img-fluid rounded shadow">
+                    <img src="uploads/ruouA.jpg?v=<?= time() ?>" alt="Rượu ngon" class="img-fluid rounded shadow">
                 <?php endif; ?>
             </div>
         </div>
@@ -83,20 +83,24 @@
     <div class="related-products mt-5">
         <h3 class="mb-4">Sản phẩm liên quan</h3>
         <div class="row">
-            <?php for ($i = 1; $i <= 4; $i++): ?>
-                <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <img src="uploads/ruou<?= $i <= 2 ? 'A' : '2' ?>.jpg" class="card-img-top" alt="Sản phẩm liên quan <?= $i ?>">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">
-                                <a href="index.php?act=chitiet&id=<?= $i ?>" class="text-decoration-none text-dark">Rượu Vang Chile <?= $i ?></a>
-                            </h6>
-                            <p class="card-text text-danger fw-bold">1.200.000₫</p>
-                            <a href="index.php?act=chitiet&id=<?= $i ?>" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
+            <?php if (isset($relatedProducts) && !empty($relatedProducts)): ?>
+                <?php foreach ($relatedProducts as $relatedProduct): ?>
+                    <div class="col-md-3 mb-3">
+                        <div class="card">
+                            <img src="uploads/<?= $relatedProduct['image'] ?? 'ruouA.jpg' ?>?v=<?= time() ?>" class="card-img-top" alt="<?= htmlspecialchars($relatedProduct['name']) ?>">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">
+                                    <a href="index.php?act=chitiet&id=<?= $relatedProduct['id'] ?>" class="text-decoration-none text-dark"><?= htmlspecialchars($relatedProduct['name']) ?></a>
+                                </h6>
+                                <p class="card-text text-danger fw-bold"><?= number_format($relatedProduct['price']) ?>₫</p>
+                                <a href="index.php?act=chitiet&id=<?= $relatedProduct['id'] ?>" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endfor; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Không có sản phẩm liên quan.</p>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -120,8 +124,33 @@ function decreaseQuantity() {
 
 function addToCart() {
     const quantity = document.getElementById('quantity').value;
-    alert('Đã thêm ' + quantity + ' sản phẩm vào giỏ hàng!');
-    // Thêm logic xử lý giỏ hàng ở đây
+    const productId = <?= $product['id'] ?? 0 ?>;
+    
+    // Gửi yêu cầu AJAX để thêm vào giỏ hàng
+    fetch('index.php?act=add-to-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'product_id=' + productId + '&quantity=' + quantity
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            // Cập nhật số lượng trong header
+            const cartBadge = document.querySelector('.badge.rounded-pill.bg-danger');
+            if (cartBadge) {
+                cartBadge.textContent = data.totalItems;
+            }
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi thêm vào giỏ hàng!');
+    });
 }
 
 function buyNow() {
